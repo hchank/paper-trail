@@ -1,87 +1,49 @@
-# Welcome to React Router!
+# Papertrail
 
-A modern, production-ready template for building full-stack React applications using React Router.
+A lightweight shared-document workspace built for the Ajaia product-engineering exercise. Create and rename documents, format notes, import text files, and share drafts between demo teammates.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## Run locally
 
-## Features
-
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
-
-## Getting Started
-
-### Installation
-
-Install the dependencies:
+Requirements: Node.js 24+ and npm.
 
 ```bash
-npm install
-```
-
-### Development
-
-Start the development server with HMR:
-
-```bash
+npm ci
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
+Open the local URL printed by Vite (normally `http://localhost:5173`). Documents persist in `.data/documents.json` and are seeded on the first run. Set `DATA_DIR` to use a different persistent directory:
 
 ```bash
+DATA_DIR=/path/to/papertrail-data npm run dev
+```
+
+Check the app and its automated test:
+
+```bash
+npm run typecheck
+npm test
 npm run build
 ```
 
+## Try the product
+
+- **Alex Morgan** is the default account and owns the welcome document. Alex can also open Sam Rivera's shared Q4 brief.
+- Use the **Demo account** selector to switch between Alex Morgan, Sam Rivera, and Jordan Lee. No passwords are used; identity is simulated for the exercise.
+- Create documents from the sidebar. Rename by editing the document title. Use the toolbar for headings, bold, italic, underline, and ordered or bulleted lists. Changes autosave.
+- Use **Share** on an owned document to grant another demo account access. Shared documents appear in the recipient's list and are editable; only the owner can rename, share, or delete.
+- Import `.txt` or `.md` files (maximum 1 MB) using the file picker. Each line is imported as editable text; Markdown syntax is preserved as text rather than rendered. The formatted document is also limited to 1 MB, so very newline-dense files may be rejected after conversion.
+
 ## Deployment
 
-### Docker Deployment
-
-To build and run using Docker:
+Build and run with Docker:
 
 ```bash
-docker build -t my-app .
-
-# Run the container
-docker run -p 3000:3000 my-app
+docker build -t papertrail .
+docker run --rm -p 3000:3000 -v papertrail-data:/app/.data papertrail
 ```
 
-The containerized application can be deployed to any platform that supports Docker, including:
+Use persistent storage for `/app/.data`: the file store is suitable for a single app instance, not a horizontally scaled deployment. This repository does not yet have a public deployment URL; publishing requires an external hosting account and persistent volume.
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+## Scope and known limitations
 
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
+This is a product slice, not production authentication or real-time multi-user editing. Demo account selection is intentionally public. Rich-text content is sanitized on save and load; files are restricted by extension and size. File persistence is single-instance and may need a database, locking strategy, and backups for production. See [ARCHITECTURE.md](./ARCHITECTURE.md) for the tradeoffs and next steps.

@@ -1,0 +1,3 @@
+Walkthrough video URL: Not recorded yet.
+
+The app is locally testable; see README.md for setup and the demo-account flow. A 3-5 minute recording and hosted URL remain outstanding deliverables.
